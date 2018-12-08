@@ -13,6 +13,8 @@
 
 @interface SubViewController ()
 
+@property (nonatomic, copy) void (^testBlock)(void);
+
 @end
 
 @implementation SubViewController
@@ -27,7 +29,8 @@
     [self debugBtnIndex:4];
     [self debugBtnIndex:5];
     [self debugBtnIndex:6];
-
+    [self debugBtnIndex:7];
+    [self debugBtnIndex:8];
 }
 
 - (void)debugBtnIndex:(NSUInteger)i {
@@ -41,13 +44,10 @@
 }
 
 - (void)test1 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0,0), ^{
-        if (!self) {
-            NSLog(@"test1 self 被系统回收了");
-        } else {
-            NSLog(@"test1 self 我是打不死的小强");
-        }
-    });
+    self.testBlock = ^{
+        self.view.backgroundColor = [UIColor lightGrayColor];
+    };
+    self.testBlock();
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:NO completion:nil];
@@ -56,36 +56,49 @@
 
 - (void)test2 {
     __weak typeof(self) weakSelf = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf) {
-            NSLog(@"test2 dispatch_get_main_queue strongSelf 被系统回收了");
-        } else {
-            NSLog(@"test2 dispatch_get_main_queue strongSelf 我是打不死的小强");
-        }
-    });
+    self.testBlock = ^{
+        weakSelf.view.backgroundColor = [UIColor lightGrayColor];
+    };
+    
+//    self.testBlock = ^{
+//        weakSelf.view.backgroundColor = [UIColor lightGrayColor];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            if (!weakSelf) {
+//                NSLog(@"test2 weakSelf 被系统回收了");
+//            } else {
+//                NSLog(@"test2 weakSelf 我是打不死的小强");
+//            }
+//        });
+//    };
+    
+//    self.testBlock = ^{
+//        __strong typeof(weakSelf) strongSelf = weakSelf;
+//        strongSelf.view.backgroundColor = [UIColor lightGrayColor];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            if (!strongSelf) {
+//                NSLog(@"test2 strongSelf 被系统回收了");
+//            } else {
+//                NSLog(@"test2 strongSelf 我是打不死的小强");
+//            }
+//        });
+//    };
+    
+    self.testBlock();
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:NO completion:nil];
     });
 }
 
 - (void)test3 {
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf) {
-            NSLog(@"test3 strongSelf 被系统回收了");
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0,0), ^{
+        if (!self) {
+            NSLog(@"test3 self 被系统回收了");
         } else {
-            NSLog(@"test3 strongSelf 我是打不死的小强");
+            NSLog(@"test3 self 我是打不死的小强");
         }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
-            if (!strongSelf) {
-                NSLog(@"test3 dispatch_after strongSelf 被系统回收了");
-            } else {
-                NSLog(@"test3 dispatch_after strongSelf 我是打不死的小强");
-            }
-        });
     });
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:NO completion:nil];
     });
@@ -93,27 +106,13 @@
 
 - (void)test4 {
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) {
             NSLog(@"test4 strongSelf 被系统回收了");
         } else {
             NSLog(@"test4 strongSelf 我是打不死的小强");
         }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
-            if (!strongSelf) {
-                NSLog(@"test4 dispatch_after strongSelf 被系统回收了");
-            } else {
-                NSLog(@"test4 dispatch_after strongSelf 我是打不死的小强");
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
-                    if (!strongSelf) {
-                        NSLog(@"test4 dispatch_after dispatch_after strongSelf 被系统回收了");
-                    } else {
-                        NSLog(@"test4 dispatch_after dispatch_after strongSelf 我是打不死的小强");
-                    }
-                });
-            }
-        });
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:NO completion:nil];
@@ -122,17 +121,14 @@
 
 - (void)test5 {
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) {
             NSLog(@"test5 strongSelf 被系统回收了");
         } else {
             NSLog(@"test5 strongSelf 我是打不死的小强");
         }
-        
-        __weak typeof(self) weakSelf = strongSelf;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
-            __strong typeof(self) strongSelf = weakSelf;
             if (!strongSelf) {
                 NSLog(@"test5 dispatch_after strongSelf 被系统回收了");
             } else {
@@ -154,22 +150,76 @@
         } else {
             NSLog(@"test6 strongSelf 我是打不死的小强");
         }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
+            if (!strongSelf) {
+                NSLog(@"test6 dispatch_after strongSelf 被系统回收了");
+            } else {
+                NSLog(@"test6 dispatch_after strongSelf 我是打不死的小强");
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
+                    if (!strongSelf) {
+                        NSLog(@"test6 dispatch_after dispatch_after strongSelf 被系统回收了");
+                    } else {
+                        NSLog(@"test6 dispatch_after dispatch_after strongSelf 我是打不死的小强");
+                    }
+                });
+            }
+        });
+    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:NO completion:nil];
+    });
+}
+
+- (void)test7 {
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            NSLog(@"test7 strongSelf 被系统回收了");
+        } else {
+            NSLog(@"test7 strongSelf 我是打不死的小强");
+        }
         
         __weak typeof(self) weakSelf = strongSelf;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
             __strong typeof(self) strongSelf = weakSelf;
             if (!strongSelf) {
-                NSLog(@"test6 dispatch_after strongSelf 被系统回收了");
+                NSLog(@"test7 dispatch_after strongSelf 被系统回收了");
             } else {
-                NSLog(@"test6 dispatch_after strongSelf 我是打不死的小强");
+                NSLog(@"test7 dispatch_after strongSelf 我是打不死的小强");
+            }
+        });
+    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:NO completion:nil];
+    });
+}
+
+- (void)test8 {
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            NSLog(@"test8 strongSelf 被系统回收了");
+        } else {
+            NSLog(@"test8 strongSelf 我是打不死的小强");
+        }
+        
+        __weak typeof(self) weakSelf = strongSelf;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
+            __strong typeof(self) strongSelf = weakSelf;
+            if (!strongSelf) {
+                NSLog(@"test8 dispatch_after strongSelf 被系统回收了");
+            } else {
+                NSLog(@"test8 dispatch_after strongSelf 我是打不死的小强");
                 
                 __weak typeof(self) weakSelf = strongSelf;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_global_queue(0, 0), ^{
                     __strong typeof(self) strongSelf = weakSelf;
                     if (!strongSelf) {
-                        NSLog(@"test6 dispatch_after dispatch_after strongSelf 被系统回收了");
+                        NSLog(@"test8 dispatch_after dispatch_after strongSelf 被系统回收了");
                     } else {
-                        NSLog(@"test6 dispatch_after dispatch_after strongSelf 我是打不死的小强");
+                        NSLog(@"test8 dispatch_after dispatch_after strongSelf 我是打不死的小强");
                     }
                 });
             }
