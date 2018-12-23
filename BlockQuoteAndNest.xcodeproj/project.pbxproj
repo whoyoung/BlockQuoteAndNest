@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		777DAF36214A5CA2005783DC /* SubObjectStrongQuoteInParentView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubObjectStrongQuoteInParentView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		777DAF36214A5CA2005783DC /* BlockQuoteAndNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlockQuoteAndNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		777DAF39214A5CA2005783DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		777DAF3A214A5CA2005783DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		777DAF3C214A5CA2005783DC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -45,7 +45,7 @@
 		777DAF2D214A5CA1005783DC = {
 			isa = PBXGroup;
 			children = (
-				777DAF38214A5CA2005783DC /* SubObjectStrongQuoteInParentView */,
+				777DAF38214A5CA2005783DC /* BlockQuoteAndNest */,
 				777DAF37214A5CA2005783DC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,12 +53,12 @@
 		777DAF37214A5CA2005783DC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				777DAF36214A5CA2005783DC /* SubObjectStrongQuoteInParentView.app */,
+				777DAF36214A5CA2005783DC /* BlockQuoteAndNest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		777DAF38214A5CA2005783DC /* SubObjectStrongQuoteInParentView */ = {
+		777DAF38214A5CA2005783DC /* BlockQuoteAndNest */ = {
 			isa = PBXGroup;
 			children = (
 				777DAF39214A5CA2005783DC /* AppDelegate.h */,
@@ -73,15 +73,15 @@
 				777DAF47214A5CA4005783DC /* Info.plist */,
 				777DAF48214A5CA4005783DC /* main.m */,
 			);
-			path = SubObjectStrongQuoteInParentView;
+			path = BlockQuoteAndNest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		777DAF35214A5CA1005783DC /* SubObjectStrongQuoteInParentView */ = {
+		777DAF35214A5CA1005783DC /* BlockQuoteAndNest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 777DAF4C214A5CA4005783DC /* Build configuration list for PBXNativeTarget "SubObjectStrongQuoteInParentView" */;
+			buildConfigurationList = 777DAF4C214A5CA4005783DC /* Build configuration list for PBXNativeTarget "BlockQuoteAndNest" */;
 			buildPhases = (
 				777DAF32214A5CA1005783DC /* Sources */,
 				777DAF33214A5CA1005783DC /* Frameworks */,
@@ -91,9 +91,9 @@
 			);
 			dependencies = (
 			);
-			name = SubObjectStrongQuoteInParentView;
+			name = BlockQuoteAndNest;
 			productName = SubObjectStrongQuoteInParentView;
-			productReference = 777DAF36214A5CA2005783DC /* SubObjectStrongQuoteInParentView.app */;
+			productReference = 777DAF36214A5CA2005783DC /* BlockQuoteAndNest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -110,7 +110,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 777DAF31214A5CA1005783DC /* Build configuration list for PBXProject "SubObjectStrongQuoteInParentView" */;
+			buildConfigurationList = 777DAF31214A5CA1005783DC /* Build configuration list for PBXProject "BlockQuoteAndNest" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -123,7 +123,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				777DAF35214A5CA1005783DC /* SubObjectStrongQuoteInParentView */,
+				777DAF35214A5CA1005783DC /* BlockQuoteAndNest */,
 			);
 		};
 /* End PBXProject section */
@@ -291,12 +291,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7EZ23W2MEV;
-				INFOPLIST_FILE = SubObjectStrongQuoteInParentView/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BlockQuoteAndNest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gotokeep.SubObjectStrongQuoteInParentView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gotokeep.BlockQuoteAndNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -308,12 +308,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7EZ23W2MEV;
-				INFOPLIST_FILE = SubObjectStrongQuoteInParentView/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BlockQuoteAndNest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gotokeep.SubObjectStrongQuoteInParentView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gotokeep.BlockQuoteAndNest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -322,7 +322,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		777DAF31214A5CA1005783DC /* Build configuration list for PBXProject "SubObjectStrongQuoteInParentView" */ = {
+		777DAF31214A5CA1005783DC /* Build configuration list for PBXProject "BlockQuoteAndNest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				777DAF4A214A5CA4005783DC /* Debug */,
@@ -331,7 +331,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		777DAF4C214A5CA4005783DC /* Build configuration list for PBXNativeTarget "SubObjectStrongQuoteInParentView" */ = {
+		777DAF4C214A5CA4005783DC /* Build configuration list for PBXNativeTarget "BlockQuoteAndNest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				777DAF4D214A5CA4005783DC /* Debug */,
