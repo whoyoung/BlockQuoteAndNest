@@ -7,13 +7,17 @@
 //
 
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
-#define BtnHeight 30
+#define Padding 15.0
+#define BtnWidth (ScreenWidth - 4 * Padding) / 3
+#define BtnHeight 50
 
 #import "SubViewController.h"
 
 @interface SubViewController ()
 
 @property (nonatomic, copy) void (^testBlock)(void);
+
+@property (nonatomic, copy) NSString *testStr;
 
 @end
 
@@ -31,6 +35,9 @@
     [self debugBtnIndex:6];
     [self debugBtnIndex:7];
     [self debugBtnIndex:8];
+    [self debugBtnIndex:9];
+    [self debugBtnIndex:10];
+    [self debugBtnIndex:11];
 }
 
 - (void)debugBtnIndex:(NSUInteger)i {
@@ -39,7 +46,9 @@
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn addTarget:self action:NSSelectorFromString(title) forControlEvents:UIControlEventTouchUpInside];
-    btn.frame = CGRectMake(0, 80 + BtnHeight * (i-1) * 2, ScreenWidth, BtnHeight);
+    CGFloat x = ((3 - i % 3) + 1) * Padding + (i % 3) * BtnWidth;
+    CGFloat y = 80 + i / 3 * (BtnHeight + Padding);
+    btn.frame = CGRectMake(x, y, BtnWidth, BtnHeight);
     [self.view addSubview:btn];
 }
 
@@ -228,6 +237,40 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self dismissViewControllerAnimated:NO completion:nil];
     });
+}
+
+
+- (void)test9 {
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong typeof(weakSelf) self = weakSelf;
+        self.view.backgroundColor = [UIColor grayColor];
+        [super dismissViewControllerAnimated:YES completion:nil];
+    });
+}
+
+- (void)test10 {
+    __weak typeof(self) weakSelf = self;
+    self.testBlock = ^{
+        __strong typeof(weakSelf) self = weakSelf;
+        self.view.backgroundColor = [UIColor lightGrayColor];
+        //       [super dismissViewControllerAnimated:YES completion:nil]; // warning: 会内存泄露
+        [self dismissViewControllerAnimated:YES completion:nil]; // pass : 无内存泄露
+    };
+    self.testBlock();
+}
+
+
+- (void)test11 {
+    self.testStr = @"aTestStr";
+    __weak typeof(self) weakSelf = self;
+    void (^testParamBlock)(NSString *str) = ^(NSString *str) {
+        __strong typeof(weakSelf) self = weakSelf;
+        self.title = str;
+        [super dismissViewControllerAnimated:YES completion:nil]; // pass : 无内存泄露
+//        [self dismissViewControllerAnimated:YES completion:nil]; // pass : 无内存泄露
+    };
+    testParamBlock(self.testStr);
 }
 
 - (void)didReceiveMemoryWarning {
