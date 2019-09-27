@@ -38,6 +38,8 @@
     [self debugBtnIndex:9];
     [self debugBtnIndex:10];
     [self debugBtnIndex:11];
+    [self debugBtnIndex:12];
+
 }
 
 - (void)debugBtnIndex:(NSUInteger)i {
@@ -271,6 +273,18 @@
 //        [self dismissViewControllerAnimated:YES completion:nil]; // pass : 无内存泄露
     };
     testParamBlock(self.testStr);
+}
+
+- (void)test12 {
+    __weak typeof(self) weakSelf = self;
+    self.testBlock = ^{
+        __strong typeof(weakSelf) self = weakSelf;
+        self.view.backgroundColor = [UIColor lightGrayColor];
+//        self->_testStr = @"iva testStr"; // pass : 无内存泄露
+        _testStr = @"iva testStr"; // fail : 会内存泄露。Block implicitly retains 'self';
+        [self dismissViewControllerAnimated:YES completion:nil]; // pass : 无内存泄露
+    };
+    self.testBlock();
 }
 
 - (void)didReceiveMemoryWarning {
